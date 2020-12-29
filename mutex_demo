@@ -1,0 +1,27 @@
+#include <thread>
+#include <chrono>
+#include <mutex>
+
+int chopper_count = 0;
+
+std::mutex lock;
+
+void chopper(){
+    
+    for(int i = 100000;i>0;i--){
+        lock.lock();
+        chopper_count++;
+        lock.unlock();
+    }
+    
+}
+
+int main(){
+    std::thread luo(chopper);
+    std::thread gao(chopper);
+    
+    luo.join();
+    gao.join();
+    
+    printf("total count is %d\n", chopper_count);
+}
